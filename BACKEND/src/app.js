@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import passport from './config/passport.js'; // Import passport config
+import passport from './config/passport.js';
 import dotenv from 'dotenv';
 
 import connectDB from './config/mongo.config.js';
@@ -22,8 +22,7 @@ const app = express();
 if (process.env.MONGO_URI) {
     connectDB();
 } else {
-    console.warn('⚠️  MONGO_URI not set - running without database connection');
-    console.warn('   Add your MongoDB Atlas connection string to .env file');
+    console.warn('MONGO_URI not set - running without database connection');
 }
 
 // Middleware
@@ -49,10 +48,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/urls', urlRoutes);
 
 // Redirect route (must be after API routes to avoid conflicts)
-// This handles: GET /:shortCode -> redirect to original URL
 app.get('/:shortCode', redirectUrl);
 
-// 404 handler (for routes that don't match)
+// 404 handler
 app.use((req, res) => {
     res.status(404).json({ success: false, message: 'Route not found' });
 });
@@ -64,11 +62,6 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => {
-//     console.log(`🚀 Server is running on http://localhost:${PORT}`);
-// });
-
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {
