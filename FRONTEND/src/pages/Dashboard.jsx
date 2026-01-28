@@ -4,7 +4,7 @@ import axios from 'axios';
 import QRCode from 'qrcode';
 import { useAuth } from '../context/AuthContext';
 
-const API_URL = '/api';
+const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : '/api';
 
 const Dashboard = () => {
     const [urls, setUrls] = useState([]);
